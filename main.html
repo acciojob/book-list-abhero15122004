@@ -1,16 +1,218 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBookList</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8rem;
+            font-weight: normal;
+            margin-bottom: 30px;
+        }
+
+        h1 span.black {
+            color: #222;
+        }
+
+        h1 span.blue {
+            color: #007bff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 1rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        #submit {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 5px;
+            margin-bottom: 40px;
+        }
+
+        #submit:hover {
+            background-color: #0056b3;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 1rem;
+            background-color: transparent;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            vertical-align: middle;
+            text-align: left;
+        }
+
+        .table thead th {
+            border-bottom: 2px solid #dee2e6;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .table tbody tr {
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        /* Striped table effect matching Bootstrap table-striped */
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-size: 0.9rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .delete:hover {
+            background-color: #c82333;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+    </style>
 </head>
-
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
 
+    <div class="container">
+        <h1><span class="black">My</span><span class="blue">Book</span><span class="black">List</span></h1>
+
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title">
+        </div>
+
+        <div class="form-group">
+            <label for="author">Author</label>
+            <input type="text" id="author">
+        </div>
+
+        <div class="form-group">
+            <label for="isbn">ISBN#</label>
+            <input type="text" id="isbn">
+        </div>
+
+        <button id="submit">Add Book</button>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN#</th>
+                    <th class="text-right"></th>
+                </tr>
+            </thead>
+            <tbody id="book-list">
+                <!-- Dynamically added rows will appear here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const submitBtn = document.getElementById('submit');
+        const bookList = document.getElementById('book-list');
+
+        submitBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Retrieve input values
+            const titleInput = document.getElementById('title').value.trim();
+            const authorInput = document.getElementById('author').value.trim();
+            const isbnInput = document.getElementById('isbn').value.trim();
+
+            // Simple validation to ensure fields are not empty
+            if (titleInput === '' || authorInput === '' || isbnInput === '') {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Create a new row element
+            const row = document.createElement('tr');
+
+            // Insert columns with data and delete button
+            row.innerHTML = `
+                <td>${titleInput}</td>
+                <td>${authorInput}</td>
+                <td>${isbnInput}</td>
+                <td class="text-right"><button class="delete">X</button></td>
+            `;
+
+            // Append the row to the table body
+            bookList.appendChild(row);
+
+            // Clear input fields after submission
+            document.getElementById('title').value = '';
+            document.getElementById('author').value = '';
+            document.getElementById('isbn').value = '';
+        });
+
+        // Event listener for deleting a book row
+        bookList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('delete')) {
+                // Remove the parent row (tr) when the clear/delete button is clicked
+                e.target.parentElement.parentElement.remove();
+            }
+        });
+    </script>
 </body>
-
 </html>
